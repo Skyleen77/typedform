@@ -4,6 +4,21 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "author": "Elliot Sutton",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Skyleen77/typedform.git"
+  },
+  "keywords": [
+    "react",
+    "form",
+    "validation",
+    "typescript",
+    "zod",
+    "react-hook-form",
+    "hookform"
+  ],
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "build": "tsup src/index.tsx --format cjs,esm --dts",
