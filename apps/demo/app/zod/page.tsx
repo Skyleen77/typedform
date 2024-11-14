@@ -1,13 +1,8 @@
 'use client';
 
-import { z, ZodObject, ZodSchema } from 'zod';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormMessage,
-  InferValues,
-} from 'typedform';
+import { z } from 'zod';
+import { Form, FormControl, FormField, FormMessage } from 'typedform';
+import { useRef } from 'react';
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -16,19 +11,11 @@ const formSchema = z.object({
 });
 
 export default function Home() {
+  const testRef = useRef<HTMLInputElement>(null);
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
-
-  console.log('formSchema', formSchema);
-  console.log(
-    'formSchema instanceof ZodSchema',
-    formSchema instanceof ZodSchema,
-  );
-  console.log(
-    'formSchema instanceof ZodObject',
-    formSchema instanceof ZodObject,
-  );
 
   return (
     <Form
@@ -53,16 +40,25 @@ export default function Home() {
               </>
             )}
           </FormField> */}
-          <FormField name="username" asChild>
-            <div>
-              <FormControl>
-                <input
-                  className="px-3 py-1.5 border rounded-lg"
-                  placeholder="shadcn"
-                />
-              </FormControl>
-              <FormMessage>This is your public display name.</FormMessage>
-            </div>
+          <FormField name="username">
+            <FormControl
+              ref={testRef}
+              as="input"
+              className="px-3 py-1.5 border rounded-lg"
+              placeholder="shadcn"
+            />
+            {/* <FormMessage asChild>
+              <p className="text-blue-500">This is your public display name.</p>
+            </FormMessage> */}
+            <FormMessage>
+              {({ error }) => (
+                <p className={error ? 'text-red-500' : 'text-blue-500'}>
+                  {error
+                    ? String(error.message)
+                    : 'This is your public display name.'}
+                </p>
+              )}
+            </FormMessage>
           </FormField>
           <button type="submit">Submit</button>
         </>

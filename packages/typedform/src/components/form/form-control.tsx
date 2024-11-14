@@ -7,13 +7,23 @@ import { forwardRefPolymorphic } from '../../utils';
 const DEFAULT_CONTROL_TAG = 'div' as const;
 
 type FormControlProps = {
-  children:
+  /** Children components or a render function that provides field props for controlled input */
+  children?:
     | React.ReactNode
     | ((args: {
         field: ControllerRenderProps<FieldValues, string>;
       }) => React.ReactNode);
 };
 
+/**
+ * `FormControl` is a polymorphic component that wraps a form control element,
+ * linking it to a field in the form context and providing accessibility attributes.
+ *
+ * @param {FormControlProps} props - Properties for configuring the form control, including child elements or a render function.
+ * @param {React.Ref<HTMLElement>} ref - Ref forwarded to the rendered control element.
+ * @template D - The tag type for the control component, defaults to `div`.
+ * @returns {React.ReactElement} - The rendered control element.
+ */
 const FormControl = forwardRefPolymorphic<
   typeof DEFAULT_CONTROL_TAG,
   FormControlProps
@@ -32,7 +42,6 @@ const FormControl = forwardRefPolymorphic<
 
   return (
     <Element
-      ref={ref}
       id={formItemId}
       aria-describedby={
         !error
@@ -42,6 +51,8 @@ const FormControl = forwardRefPolymorphic<
       aria-invalid={!!error}
       data-error={!!error}
       {...restProps}
+      {...(!children ? { ...field } : {})}
+      ref={ref}
     >
       {typeof children === 'function'
         ? children({ field })
