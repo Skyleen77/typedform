@@ -1,18 +1,20 @@
 'use client';
 
-import { z } from 'zod';
-import { Form, FormField } from '../../../../packages/typedform/dist';
+import { object, string, InferType } from 'yup';
+import { Form, FormField, InferValues } from 'typedform';
 
-const formSchema = z.object({
-  username: z.string().min(2, {
+const formSchema = object({
+  username: string().min(2, {
     message: 'Username must be at least 2 characters.',
   }),
 });
 
 export default function Home() {
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: InferType<typeof formSchema>) {
     console.log(values);
   }
+
+  console.log('formSchema', formSchema);
 
   return (
     <Form

@@ -1,22 +1,28 @@
-import React from 'react';
-import type { PropsWithAs } from '../../types';
 import { AsChild } from '../as-child';
 import { useFormField } from './form-field';
+import { forwardRefPolymorphic } from '../../utils';
 
 const DEFAULT_DESCRIPTION_TAG = 'p' as const;
 
-type FormDescriptionProps = PropsWithAs<
-  React.ComponentPropsWithoutRef<typeof DEFAULT_DESCRIPTION_TAG>
->;
+type FormDescriptionProps = {};
 
-const FormDescription = React.forwardRef<
-  React.ElementRef<typeof DEFAULT_DESCRIPTION_TAG>,
+const FormDescription = forwardRefPolymorphic<
+  typeof DEFAULT_DESCRIPTION_TAG,
   FormDescriptionProps
->(({ as: Component = 'p', asChild = false, ...props }, ref) => {
+>((props, ref) => {
+  const {
+    as: Component = DEFAULT_DESCRIPTION_TAG,
+    asChild = false,
+    ...restProps
+  } = props;
+
   const { formDescriptionId } = useFormField();
+
   const Element = asChild ? AsChild : Component;
-  return <Element ref={ref} id={formDescriptionId} {...props} />;
+
+  return <Element ref={ref} id={formDescriptionId} {...restProps} />;
 });
+
 FormDescription.displayName = 'FormDescription';
 
 export { FormDescription, type FormDescriptionProps };

@@ -7,7 +7,8 @@ import {
   type FieldValues,
 } from 'react-hook-form';
 import { AsChild } from '../as-child';
-import { PropsWithAs } from '../../types';
+import { PolymorphicProps, ReactTag } from '../../types';
+import { forwardRefPolymorphic } from '../../utils';
 
 const DEFAULT_FIELD_TAG = 'div' as const;
 
@@ -50,23 +51,27 @@ export const useFormField = () => {
 type FormFieldProps<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>,
-> = PropsWithAs<
-  {
-    name: TName;
-    as?: React.ElementType;
-    asChild?: boolean;
-    children:
-      | React.ReactNode
-      | ((field: {
-          field: ControllerRenderProps<FieldValues, string>;
-        }) => React.ReactNode);
-  } & Omit<React.ComponentPropsWithoutRef<typeof DEFAULT_FIELD_TAG>, 'children'>
->;
+> = {
+  name: TName;
+  children:
+    | React.ReactNode
+    | ((field: {
+        field: ControllerRenderProps<FieldValues, string>;
+      }) => React.ReactNode);
+};
 
-const FormField = React.forwardRef<
-  React.ElementRef<typeof DEFAULT_FIELD_TAG>,
+const FormField = forwardRefPolymorphic<
+  typeof DEFAULT_FIELD_TAG,
   FormFieldProps<FieldValues, string>
->(({ name, as: Component = 'div', asChild = false, children }, ref) => {
+>((props, ref) => {
+  const {
+    as: Component = DEFAULT_FIELD_TAG,
+    asChild = false,
+    children,
+    name,
+    ...restProps
+  } = props;
+
   const { control } = useFormContext();
   const id = React.useId();
 
@@ -78,7 +83,7 @@ const FormField = React.forwardRef<
       control={control}
       render={({ field }) => (
         <FormFieldContext.Provider value={{ name, id, field }}>
-          <Element ref={ref}>
+          <Element ref={ref} {...restProps}>
             {typeof children === 'function'
               ? children({ field })
               : React.isValidElement(children)
@@ -90,6 +95,7 @@ const FormField = React.forwardRef<
     />
   );
 });
+
 FormField.displayName = 'FormField';
 
 export { FormField, type FormFieldProps };

@@ -1,15 +1,12 @@
 import React from 'react';
 import { useFormField } from './form-field';
 import { AsChild } from '../as-child';
-import type { PropsWithAs } from '../../types';
 import type { ControllerRenderProps, FieldValues } from 'react-hook-form';
+import { forwardRefPolymorphic } from '../../utils';
 
 const DEFAULT_CONTROL_TAG = 'div' as const;
 
-type FormControlProps = Omit<
-  PropsWithAs<React.ComponentPropsWithoutRef<typeof DEFAULT_CONTROL_TAG>>,
-  'children'
-> & {
+type FormControlProps = {
   children:
     | React.ReactNode
     | ((args: {
@@ -17,13 +14,22 @@ type FormControlProps = Omit<
       }) => React.ReactNode);
 };
 
-const FormControl = React.forwardRef<
-  React.ElementRef<typeof DEFAULT_CONTROL_TAG>,
+const FormControl = forwardRefPolymorphic<
+  typeof DEFAULT_CONTROL_TAG,
   FormControlProps
->(({ as: Component = 'div', asChild = false, children, ...props }, ref) => {
+>((props, ref) => {
+  const {
+    as: Component = DEFAULT_CONTROL_TAG,
+    asChild = false,
+    children,
+    ...restProps
+  } = props;
+
   const { error, field, formItemId, formDescriptionId, formMessageId } =
     useFormField();
+
   const Element = asChild ? AsChild : Component;
+
   return (
     <Element
       ref={ref}
@@ -35,7 +41,7 @@ const FormControl = React.forwardRef<
       }
       aria-invalid={!!error}
       data-error={!!error}
-      {...props}
+      {...restProps}
     >
       {typeof children === 'function'
         ? children({ field })
