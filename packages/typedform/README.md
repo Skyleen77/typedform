@@ -5,10 +5,9 @@
 ## Features
 
 - **Type-Safe Forms**: Leverages TypeScript for type-safe form handling.
-- **Easy Validation**: Integrates seamlessly with validation libraries like `zod` or `yup`.
+- **Easy Validation**: Integrates seamlessly with validation libraries like `zod`, `yup`, `joi` and more.
 - **Accessible**: Implements ARIA attributes and proper labeling for enhanced accessibility.
 - **Keyboard Navigation**: Ensures forms are easy to navigate using the keyboard.
-- **Flexible Composition**: Use pre-built components or compose your own custom form elements.
 - **Unstyled Components**: Provides the structure without imposing any styling, allowing full customization.
 
 ## Installation
