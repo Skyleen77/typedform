@@ -1,3 +1,5 @@
+'use client';
+
 export * from './components/form/form';
 export * from './components/form/form-field';
 export * from './components/form/form-control';

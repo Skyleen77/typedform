@@ -1,25 +1,26 @@
 'use client';
 
-import { object, string, InferType } from 'yup';
+import { superstructResolver } from '@hookform/resolvers/superstruct';
+import { object, string, Infer, size, refine } from 'superstruct';
 import { Form, FormControl, FormField, FormMessage } from 'typedform';
-import { yupResolver } from '@hookform/resolvers/yup';
 
 const formSchema = object({
-  username: string()
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
-    })
-    .required('Username is required'),
+  username: refine(size(string(), 2, Infinity), 'username', (value) => {
+    if (value.length < 2) {
+      return 'Username must be at least 2 characters.';
+    }
+    return true;
+  }),
 });
 
 export default function Home() {
-  function onSubmit(values: InferType<typeof formSchema>) {
+  function onSubmit(values: Infer<typeof formSchema>) {
     console.log(values);
   }
 
   return (
     <Form
-      resolver={yupResolver(formSchema)}
+      resolver={superstructResolver(formSchema)}
       onSubmit={onSubmit}
       defaultValues={{ username: '' }}
       className="space-y-8"

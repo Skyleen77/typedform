@@ -30,27 +30,6 @@ export function composeRefs<T>(
 }
 
 /**
- * Checks if an instance is of the specified type by matching its class name.
- * This function can be used for runtime type checking.
- *
- * @param {any} instance - The instance to check.
- * @param {string} className - The expected class name of the instance.
- * @returns {boolean} - `true` if the instance matches the specified type, `false` otherwise.
- * @template T
- */
-export function getInstanceOf<T>(
-  instance: any,
-  className: string,
-): instance is T {
-  return (
-    instance &&
-    instance.constructor &&
-    instance.constructor.name === className &&
-    typeof instance === 'object'
-  );
-}
-
-/**
  * Creates a polymorphic component with `forwardRef` that accepts an HTML or React element
  * as the tag and applies associated props.
  *

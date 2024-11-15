@@ -1,25 +1,32 @@
 'use client';
 
-import { object, string, InferType } from 'yup';
+import { ajvResolver } from '@hookform/resolvers/ajv';
+import { JSONSchemaType } from 'ajv';
 import { Form, FormControl, FormField, FormMessage } from 'typedform';
-import { yupResolver } from '@hookform/resolvers/yup';
 
-const formSchema = object({
-  username: string()
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
-    })
-    .required('Username is required'),
-});
+type FormType = { username: string };
+
+const formSchema: JSONSchemaType<FormType> = {
+  type: 'object',
+  properties: {
+    username: {
+      type: 'string',
+      minLength: 2,
+      errorMessage: { minLength: 'username field is required' },
+    },
+  },
+  required: ['username'],
+  additionalProperties: false,
+};
 
 export default function Home() {
-  function onSubmit(values: InferType<typeof formSchema>) {
+  function onSubmit(values: FormType) {
     console.log(values);
   }
 
   return (
     <Form
-      resolver={yupResolver(formSchema)}
+      resolver={ajvResolver(formSchema)}
       onSubmit={onSubmit}
       defaultValues={{ username: '' }}
       className="space-y-8"
