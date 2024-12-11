@@ -28,7 +28,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "pub:release": "pnpm build && pnpm publish --no-git-checks --access public",
-    "prepublishOnly": "pnpm test && pnpm lint && pnpm build"
+    "prepublishOnly": "pnpm test && pnpm lint && pnpm build",
+    "prepare": "husky"
   },
   "peerDependencies": {
     "@hookform/resolvers": "^3.9.1",
