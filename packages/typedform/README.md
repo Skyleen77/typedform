@@ -159,7 +159,6 @@ const form = useForm({
 **Props:**
 
 - `as`: The component or element type to render (default: `'div'`).
-- `asChild`: Render the field as a child component (default: `false`).
 - `children`: The input component or a render function receiving field props.
 
 ### `FormLabel`

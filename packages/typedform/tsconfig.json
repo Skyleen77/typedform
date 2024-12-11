@@ -9,6 +9,6 @@
     "allowSyntheticDefaultImports": true,
     "types": ["jest", "@testing-library/jest-dom"],
   },
-  "include": ["src", "tsup.config.ts", "**/*.test.tsx"],
+  "include": ["src", "tsup.config.ts", "jest.setup.ts", "jest.config.js", "**/*.test.tsx"],
   "exclude": ["node_modules", "dist"]
 }
