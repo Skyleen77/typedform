@@ -4,7 +4,7 @@ import { AsChild } from '../as-child';
 import type { ControllerRenderProps, FieldValues } from 'react-hook-form';
 import { forwardRefPolymorphic } from '../../utils';
 
-const DEFAULT_CONTROL_TAG = 'div' as const;
+const DEFAULT_CONTROL_TAG = 'input' as const;
 
 type FormControlProps = {
   /** Children components or a render function that provides field props for controlled input */
@@ -21,24 +21,19 @@ type FormControlProps = {
  *
  * @param {FormControlProps} props - Properties for configuring the form control, including child elements or a render function.
  * @param {React.Ref<HTMLElement>} ref - Ref forwarded to the rendered control element.
- * @template D - The tag type for the control component, defaults to `div`.
+ * @template D - The tag type for the control component, defaults to `input`.
  * @returns {React.ReactElement} - The rendered control element.
  */
 const FormControl = forwardRefPolymorphic<
   typeof DEFAULT_CONTROL_TAG,
   FormControlProps
 >((props, ref) => {
-  const {
-    as: Component = DEFAULT_CONTROL_TAG,
-    asChild = false,
-    children,
-    ...restProps
-  } = props;
+  const { as: Component, children, ...restProps } = props;
 
   const { error, field, formItemId, formDescriptionId, formMessageId } =
     useFormField();
 
-  const Element = asChild ? AsChild : Component;
+  const Element = Component ?? AsChild;
 
   return (
     <Element

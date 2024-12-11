@@ -103,7 +103,7 @@ When the `form` prop is **not provided**, the `Form` component creates and manag
 - `defaultValues`: Initial values for the form fields.
 - `values`: Controlled form values.
 - `useFormProps`: Additional options for the `useForm` hook.
-- `children`: Form elements or a render function.
+- `children`: Form elements or a render function receiving form.
 
 **Example:**
 
