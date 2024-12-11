@@ -1,33 +1,41 @@
+'use client';
+
 import { z } from 'zod';
-import { Form, FormControl, FormField, FormMessage } from 'typedform';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormLabel,
+  FormMessage,
+} from 'typedform';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
+const schema = z.object({
+  firstName: z.string().min(1, { message: 'First name is required.' }),
 });
 
 export default function Home() {
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function handleSubmit(values: z.infer<typeof schema>) {
     console.log(values);
   }
 
   return (
     <Form
-      resolver={zodResolver(formSchema)}
-      onSubmit={onSubmit}
-      defaultValues={{ username: '' }}
-      className="space-y-8"
+      resolver={zodResolver(schema)}
+      onSubmit={handleSubmit}
+      defaultValues={{ firstName: '' }}
     >
-      <FormField name="username">
+      <FormField name="firstName">
+        <FormLabel>First name</FormLabel>
         <FormControl>
-          <input
-            className="px-3 py-1.5 border rounded-lg"
-            placeholder="shadcn"
-          />
+          {({ field }) => (
+            <input
+              className="px-3 py-1.5 border rounded-lg"
+              placeholder="Enter your first name"
+              {...field}
+            />
+          )}
         </FormControl>
-
         <FormMessage />
       </FormField>
       <button type="submit">Submit</button>
