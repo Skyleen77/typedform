@@ -1,9 +1,14 @@
 {
   "name": "typedform",
-  "version": "1.0.0-beta.6",
+  "version": "1.0.0-beta.7",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
   "author": "Elliot Sutton",
   "license": "MIT",
   "repository": {
@@ -27,7 +32,7 @@
     "dev": "tsup --watch",
     "test": "jest",
     "test:watch": "jest --watch",
-    "pub:release": "pnpm build && pnpm publish --no-git-checks --access public",
+    "pub:release": "pnpm publish --no-git-checks --access public",
     "prepublishOnly": "pnpm test && pnpm lint && pnpm build",
     "prepare": "husky"
   },
